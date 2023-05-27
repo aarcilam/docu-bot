@@ -1,5 +1,5 @@
 // AQUI VAN LAS DESCRIPCIONES DE CADA ARCHIVO sunombre: descripcion
-const filesDescriptions = {
+const filesDescriptions:any = {
     'app.controller.ts': 'Root controller',
     'app.service.ts': 'Root service',
     'account.controller.ts': 'Account controller',
@@ -108,11 +108,10 @@ const filesDescriptions = {
 
 import fs from 'fs';
 import path from 'path';
-let processedFiles = 0;
 
 // Configura la carpeta y el patrón de archivos en los que deseas agregar el encabezado
-const excludedFolders = ['node_modules']; // Agrega los nombres de los directorios que deseas excluir
-const excludedFiles = []; // Archivos a excluir
+const excludedFolders:string[] = ['node_modules']; // Agrega los nombres de los directorios que deseas excluir
+const excludedFiles:string[] = []; // Archivos a excluir
 
 const header = `/**
  * <%= projectName %> - <%= description %>
@@ -132,21 +131,21 @@ const header = `/**
  */
 `;
 
-const vars = {
-  projectName: "eCloud4 Backend service",
-  description: "services for app and bo of eCloud4",
-  date: new Date(),
-  year: new Date().getFullYear(),
-  author: "eCloud4",
-  license: "MIT",
-  version: "1.0.0",
-  filename: "",
-  fileDescription: ""
+const vars:any = {
+    projectName: "eCloud4 Backend service",
+    description: "services for app and bo of eCloud4",
+    date: new Date(),
+    year: new Date().getFullYear(),
+    author: "eCloud4",
+    license: "MIT",
+    version: "1.0.0",
+    filename: "",
+    fileDescription: ""
 };
 
-const files = {};
+const files:any = {};
 
-function addHeaderToFile(file) {
+function addHeaderToFile(file:string) {
     const filePath = path.resolve(file);
     const filename = path.basename(filePath);
     const fileContents = fs.readFileSync(filePath, 'utf-8');
@@ -165,12 +164,11 @@ function addHeaderToFile(file) {
 
     fs.writeFileSync(filePath, newFileContents, 'utf-8');
     console.log(filename + " Header Añadido con exito ");
-    processedFiles++;
-    if(!description || description === 'descripcion') files[filename] = 'descripcion';
+    if (!description || description === 'descripcion') files[filename] = 'descripcion';
 }
 
 // Recorre los archivos en la carpeta y agrega o reemplaza el encabezado en los archivos correspondientes
-export function processFilesInFolder(folderPath,filePattern) {
+export function processFilesInFolder(folderPath:string, filePattern:RegExp) {
     const folderName = path.basename(folderPath);
 
     // Verifica si el directorio actual debe excluirse
@@ -183,13 +181,13 @@ export function processFilesInFolder(folderPath,filePattern) {
         const filePath = path.join(folderPath, file);
         const fileStat = fs.statSync(filePath);
         if (fileStat.isFile() && filePattern.test(file)) {
-        if (excludedFiles.includes(file)) {
-            console.log(`Archivo "${file}" excluido.`);
-        } else {
-            addHeaderToFile(filePath);
-        }
+            if (excludedFiles.includes(file)) {
+                console.log(`Archivo "${file}" excluido.`);
+            } else {
+                addHeaderToFile(filePath);
+            }
         } else if (fileStat.isDirectory()) {
-        processFilesInFolder(filePath);
+            processFilesInFolder(filePath,filePattern);
         }
     });
 }

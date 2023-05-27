@@ -1,15 +1,18 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, $, useTask$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
+import path from 'path';
+import { processFilesInFolder } from '~/services/addHeadersToFiles';
 
 export default component$(() => {
+  // const folder = path.resolve('src');
+  // const filePattern = /\.tsx$/;
+
+  // processFilesInFolder(folder,filePattern)
+
+  
   return (
     <>
-      <h1>Hi 👋</h1>
-      <p>
-        Can't wait to see what you build with qwik!
-        <br />
-        Happy coding.
-      </p>
+      <button >processFilesInFolder</button>
     </>
   );
 });

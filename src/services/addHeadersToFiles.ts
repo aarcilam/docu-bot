@@ -113,24 +113,6 @@ import path from 'path';
 const excludedFolders:string[] = ['node_modules']; // Agrega los nombres de los directorios que deseas excluir
 const excludedFiles:string[] = []; // Archivos a excluir
 
-const header = `/**
- * <%= projectName %> - <%= description %>
- * @fileoverview <%= filename %>
- * @description <%= fileDescription %>
- * @version <%= version %>
- * @date <%= date %>
- * @company eCloud4 Corporation
- *
- * This software is the property of eCloud4 Corporation. Unauthorized reproduction or distribution of
- * this software, or any portion of it, may result in severe civil and criminal penalties, and will be
- * prosecuted to the maximum extent possible under the law.
- *
- * @license <%= license %>
- * @copyright Copyright (c) <%= year %> <%= author %>
- * @license eCloud4 Corporation Software License
- */
-`;
-
 const vars:any = {
     projectName: "eCloud4 Backend service",
     description: "services for app and bo of eCloud4",
@@ -145,7 +127,7 @@ const vars:any = {
 
 const files:any = {};
 
-function addHeaderToFile(file:string) {
+function addHeaderToFile(file:string,header:string) {
     const filePath = path.resolve(file);
     const filename = path.basename(filePath);
     const fileContents = fs.readFileSync(filePath, 'utf-8');
@@ -168,7 +150,7 @@ function addHeaderToFile(file:string) {
 }
 
 // Recorre los archivos en la carpeta y agrega o reemplaza el encabezado en los archivos correspondientes
-export function processFilesInFolder(folderPath:string, filePattern:RegExp) {
+export function processFilesInFolder(folderPath:string, filePattern:RegExp,header:string) {
     const folderName = path.basename(folderPath);
 
     // Verifica si el directorio actual debe excluirse
@@ -184,10 +166,10 @@ export function processFilesInFolder(folderPath:string, filePattern:RegExp) {
             if (excludedFiles.includes(file)) {
                 console.log(`Archivo "${file}" excluido.`);
             } else {
-                addHeaderToFile(filePath);
+                addHeaderToFile(filePath,header);
             }
         } else if (fileStat.isDirectory()) {
-            processFilesInFolder(filePath,filePattern);
+            processFilesInFolder(filePath,filePattern,header);
         }
     });
 }

@@ -1,4 +1,4 @@
-import { component$, useStore } from '@builder.io/qwik';
+import { component$, useStore, $ } from '@builder.io/qwik';
 import type { DocumentHead} from '@builder.io/qwik-city';
 import { server$ } from '@builder.io/qwik-city';
 import path from 'path';
@@ -6,7 +6,8 @@ import { processFilesInFolder } from '~/services/addHeadersToFiles';
 
 export default component$(() => {
   const store = useStore({
-    folder: '',
+    folder: '/Users/andresarcila/Desktop/aarcila/Work/qwik/src',
+    filePattern: '\.tsx$',
     header: `/**
 * <%= projectName %> - <%= description %>
 * @fileoverview <%= filename %>
@@ -28,25 +29,34 @@ export default component$(() => {
   const processFiles = server$(()=>{
     if(store.folder != ''){
       const folder = path.resolve(store.folder);
-      const filePattern = /\.tsx$/;
-      console.log(folder,filePattern);
+      const filePattern = new RegExp(store.filePattern);
+      console.log(folder,filePattern,store.header);
       processFilesInFolder(folder,filePattern,store.header);
     }
   })
 
+  const onClickProcessFiles = $(async ()=>{
+    await processFiles();
+  })
   
   return (
     <>
-      <input type="text" placeholder='folder path'
-      value={store.folder}
-      onInput$={(ev) => (store.folder = (ev.target as HTMLInputElement).value)}
+      <input 
+        type="text" 
+        placeholder='paste folder path'
+        value={store.folder}
+        onInput$={(ev) => (store.folder = (ev.target as HTMLInputElement).value)}
       />
+      <select value={store.filePattern} onInput$={(ev) => (store.filePattern = (ev.target as HTMLInputElement).value)}>
+        <option value="\.tsx$">Archivos terminados en .tsx</option>
+        <option value="\.ts$">Archivos terminados en .ts</option>
+        <option value="\.js$">Archivos terminados en .js</option>
+      </select>
       <textarea 
-      value={store.header}
-      onInput$={(ev) => (store.header = (ev.target as HTMLInputElement).value)}></textarea>
-      <button onClick$={async ()=>{
-        await processFiles();
-        }} >processFilesInFolder</button>
+        value={store.header}
+        onInput$={(ev) => (store.header = (ev.target as HTMLInputElement).value)}
+      ></textarea>
+      <button onClick$={onClickProcessFiles} >processFilesInFolder</button>
     </>
   );
 });

@@ -8,22 +8,22 @@ export default component$(() => {
   const store = useStore({
     folder: '',
     header: `/**
-    * <%= projectName %> - <%= description %>
-    * @fileoverview <%= filename %>
-    * @description <%= fileDescription %>
-    * @version <%= version %>
-    * @date <%= date %>
-    * @company eCloud4 Corporation
-    *
-    * This software is the property of eCloud4 Corporation. Unauthorized reproduction or distribution of
-    * this software, or any portion of it, may result in severe civil and criminal penalties, and will be
-    * prosecuted to the maximum extent possible under the law.
-    *
-    * @license <%= license %>
-    * @copyright Copyright (c) <%= year %> <%= author %>
-    * @license eCloud4 Corporation Software License
-    */
-    `
+* <%= projectName %> - <%= description %>
+* @fileoverview <%= filename %>
+* @description <%= fileDescription %>
+* @version <%= version %>
+* @date <%= date %>
+* @company eCloud4 Corporation
+*
+* This software is the property of eCloud4 Corporation. Unauthorized reproduction or distribution of
+* this software, or any portion of it, may result in severe civil and criminal penalties, and will be
+* prosecuted to the maximum extent possible under the law.
+*
+* @license <%= license %>
+* @copyright Copyright (c) <%= year %> <%= author %>
+* @license eCloud4 Corporation Software License
+*/
+`
   })
   const processFiles = server$(()=>{
     if(store.folder != ''){

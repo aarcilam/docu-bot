@@ -37,7 +37,7 @@ export default component$(() => {
   
   return (
     <>
-      <input type="text" 
+      <input type="text" placeholder='folder path'
       value={store.folder}
       onInput$={(ev) => (store.folder = (ev.target as HTMLInputElement).value)}
       />
